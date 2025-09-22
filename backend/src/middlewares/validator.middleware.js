@@ -33,6 +33,21 @@ const registerUserValidations = [
   responseWithValidationErrors,
 ];
 
+const loginUserValidations = [
+  body("email").optional().isEmail().withMessage("Invalid email address"),
+
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be atleast 6 characters long"),
+  (req, res, next) => {
+    if (!req.body.email) {
+      return res.status(400).json({ errors: [{ msg: "email is required" }] });
+    }
+    responseWithValidationErrors(req, res, next);
+  },
+];
+
 module.exports = {
   registerUserValidations,
+  loginUserValidations,
 };
